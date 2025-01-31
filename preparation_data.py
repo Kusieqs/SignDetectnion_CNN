@@ -56,3 +56,6 @@ def translate_image(image, x, y):
     return translated
 
 
+
+
+
