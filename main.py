@@ -1,6 +1,8 @@
 import data_split
+import model
 from preparation_data import apply_and_save_augmentations
 from data_split import split_data
+from model import  compile_model
 import tensorflow as tf
 
 if __name__ == "__main__":
@@ -9,11 +11,12 @@ if __name__ == "__main__":
 
     apply_and_save_augmentations(input_folder, output_folder)
 
-    Source_dir = r'C:\Users\konra\PycharmProjects\CNN_SD\MainSigns'
-    Split_dir = r'C:\Users\konra\PycharmProjects\CNN_SD\DataSplit'
+    source_dir = r'C:\Users\konra\PycharmProjects\CNN_SD\MainSigns'
+    data_dir = r'C:\Users\konra\PycharmProjects\CNN_SD\DataSplit'
 
-    data_split.split_data(Source_dir, Split_dir)
+    data_split.split_data(source_dir, data_dir)
 
+    compile_model(data_dir)
 
 
 

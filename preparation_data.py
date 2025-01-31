@@ -14,7 +14,7 @@ def resize_image(image_path, size):
 
 
 def apply_and_save_augmentations(folder_path, output_folder):
-    size = 200
+    size = 224
 
     for folder in os.listdir(folder_path):
         print(f"Wczytanie folderu: {folder}")
