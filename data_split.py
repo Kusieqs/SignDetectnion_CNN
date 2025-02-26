@@ -1,6 +1,7 @@
 import os
 import shutil
 import random
+from sklearn.model_selection import train_test_split
 
 def create_dirs(dir):
     for split in ['train', 'test', 'val']:
@@ -16,9 +17,9 @@ def split_data(source, split):
 
     create_dirs(split)
 
-    train = 0.7
-    test = 0.15
-    val = 0.15
+    #train = 0.7
+    #test = 0.15
+    #val = 0.15
 
     for name in os.listdir(source):
         path = os.path.join(source, name)
@@ -28,13 +29,11 @@ def split_data(source, split):
 
         images = os.listdir(path)
         random.shuffle(images)
-        num_images = len(images)
-        train_end = int(train * num_images)
-        val_end = train_end + int(val * num_images)
 
-        train_images = images[:train_end]
-        val_images = images[train_end:val_end]
-        test_images = images[val_end:]
+        train_images, test_val_images = train_test_split(images, test_size=0.3, random_state=42)
+        val_images, test_images = train_test_split(test_val_images, test_size=0.5,
+                                                   random_state=42)
+        print(len(images), len(train_images), len(val_images), len(test_images))
 
         ensure_class_dirs(split, name)
 

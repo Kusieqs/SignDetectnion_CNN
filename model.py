@@ -1,31 +1,30 @@
-
-import tensorflow as tf
 import keras
 from keras import layers, models
 
+from constants import SIZE
+from utils.generate_reports import generate_classification_report
 
 
 def compile_model(data_dir):
     batch = 32
     epochs = 10
-    img_size = (224, 224)
     data = data_dir
 
     train_ds = keras.utils.image_dataset_from_directory(
         f"{data}/train",
-        image_size=img_size,
+        image_size=SIZE,
         batch_size=batch,
     )
 
     val_ds = keras.utils.image_dataset_from_directory(
         f"{data_dir}/val",
-        image_size=img_size,
+        image_size=SIZE,
         batch_size=batch
     )
 
     test_ds = keras.utils.image_dataset_from_directory(
         f"{data_dir}/test",
-        image_size=img_size,
+        image_size=SIZE,
         batch_size=batch
     )
 
@@ -42,15 +41,22 @@ def compile_model(data_dir):
     num_classes = len(class_names)
 
     model = models.Sequential([
-        layers.Conv2D(32, (3, 3), activation='relu', input_shape=(224, 224, 3)),
+        layers.Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(SIZE[0], SIZE[1], 3)),
         layers.MaxPooling2D((2, 2)),
-        layers.Conv2D(64, (3, 3), activation='relu'),
+
+        layers.Conv2D(32, (3, 3), activation='relu', padding='same'),
         layers.MaxPooling2D((2, 2)),
-        layers.Conv2D(128, (3, 3), activation='relu'),
+
+        layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
         layers.MaxPooling2D((2, 2)),
+
+        layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
+        layers.MaxPooling2D((2, 2)),
+
         layers.Flatten(),
         layers.Dense(128, activation='relu'),
-        layers.Dense(num_classes, activation='softmax')  # Ostatnia warstwa do klasyfikacji
+        layers.Dropout(0.5),
+        layers.Dense(num_classes, activation='softmax')
     ])
 
     model.compile(optimizer='adam',
@@ -59,4 +65,6 @@ def compile_model(data_dir):
 
     model.fit(train_ds, validation_data=val_ds, epochs=epochs)
     test_loss, test_acc = model.evaluate(test_ds)
-    print(f"Dokładność na zbiorze testowym: {test_acc * 100:.2f}%")
+    ballanced_acc = generate_classification_report(model, test_ds, class_names, "sequential", SIZE[0])
+    print(f"Dokładność na zbiorze testowym: {test_acc * 100}%")
+    return model, ballanced_acc

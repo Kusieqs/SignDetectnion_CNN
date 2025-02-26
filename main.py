@@ -15,8 +15,9 @@ if __name__ == "__main__":
     data_dir = r'C:\Users\konra\PycharmProjects\CNN_SD\DataSplit'
 
     data_split.split_data(source_dir, data_dir)
+    model, ballanced_acc = compile_model(data_dir)
 
-    compile_model(data_dir)
+    model.save(f"{ballanced_acc:.3f}.keras")
 
 
 

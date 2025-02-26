@@ -1,12 +1,14 @@
-
 import cv2
 import os
 import numpy as np
 
+from constants import SIZE
+
+
 def resize_image(image_path, size):
     img = cv2.imread(image_path)
     if img is not None:
-        resized_img = cv2.resize(img, (size, size))
+        resized_img = cv2.resize(img, size)
         return resized_img
     else:
         print(f"Błąd podczas wczytywania obrazu: {image_path}")
@@ -14,7 +16,6 @@ def resize_image(image_path, size):
 
 
 def apply_and_save_augmentations(folder_path, output_folder):
-    size = 224
 
     for folder in os.listdir(folder_path):
         print(f"Wczytanie folderu: {folder}")
@@ -26,7 +27,7 @@ def apply_and_save_augmentations(folder_path, output_folder):
 
         for images in os.listdir(path):
             path_to_image = os.path.join(path, images)
-            image = resize_image(path_to_image, size)
+            image = resize_image(path_to_image, SIZE)
 
             rotated_img1 = rotate_image(image,5)
             rotated_img2 = rotate_image(rotated_img1,-10)
