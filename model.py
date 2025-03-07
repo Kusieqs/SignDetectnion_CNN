@@ -1,11 +1,9 @@
-import os
-
 import keras
 from keras import layers, models
 from keras.src.layers import GlobalAveragePooling2D
 from keras.src.optimizers import Adam
 
-from constants import SIZE, MODELS_DICT
+from utils.constants import SIZE, MODELS_DICT
 from utils.generate_reports import generate_classification_report
 
 

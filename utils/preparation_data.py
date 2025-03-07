@@ -2,7 +2,7 @@ import cv2
 import os
 import numpy as np
 
-from constants import SIZE
+from utils.constants import SIZE
 
 
 def resize_image(image_path, size):

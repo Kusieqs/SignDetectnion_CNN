@@ -1,12 +1,11 @@
 from ultralytics import YOLO
 import cv2
 import tensorflow as tf
-from PIL import Image
 import numpy as np
-from constants import CLASS_NAMES, SIZE
+from utils.constants import CLASS_NAMES, SIZE, MODELS_DICT
 
 yolo_model = YOLO("runs/detect/train6/weights/best.pt")
-classifier_model = tf.keras.models.load_model("0.994.keras")
+classifier_model = tf.keras.models.load_model("0.955.keras")
 
 
 image_path = r"test.png"
@@ -20,13 +19,13 @@ for result in results:
         cropped_sign = image[y1:y2, x1:x2]
 
 
-        sign = cv2.resize(cropped_sign, (224,224))
+        sign = cv2.resize(cropped_sign, SIZE)
         cv2.imshow("sign", sign)
         cv2.waitKey(0)
 
-
-        normalization_sign = np.array(sign) / 255.0
-        img_array = np.expand_dims(normalization_sign, axis=0)
+        method = MODELS_DICT.get("EfficientNetB0")[1]
+        img_preprocessed = method(sign)
+        img_array = np.expand_dims(img_preprocessed, axis=0)
 
 
         prediction = classifier_model.predict(img_array)
