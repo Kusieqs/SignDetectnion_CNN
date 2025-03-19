@@ -48,11 +48,11 @@ while cap.isOpened():
             label = CLASS_NAMES.get(class_id, "Unknown")
 
             cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
-            cv2.putText(frame, f"{label} ({prediction[0][class_id]:.2f})",
+            cv2.putText(frame, f"{label}({prediction[0][class_id]*100}%)",
                         (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
     cv2.imshow('Video', frame)
-    if cv2.waitKey(int(1000 / fps)) & 0xFF == ord('q'):
+    if cv2.waitKey(int(100 / fps)) & 0xFF == ord('q'):
         break
 
 cap.release()

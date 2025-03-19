@@ -10,13 +10,13 @@ from keras.src.applications.vgg16 import preprocess_input as vgg16_preprocess_in
 from keras.src.applications.inception_v3 import preprocess_input as inception_v3_preprocess_input
 from keras.src.applications.mobilenet_v2 import preprocess_input as mobilenet_v2_preprocess_input
 
-SIZE = (90,90)
+SIZE = (160,160)
 
 MODELS_DICT = {
-    #"ResNet50": (ResNet50, resnet_preprocess_input),
-    #"InceptionV3": (InceptionV3, inception_v3_preprocess_input),
-    #"MobileNet": (MobileNetV2, mobilenet_v2_preprocess_input),
-    #"VGG16": (VGG16, vgg16_preprocess_input),
+    "ResNet50": (ResNet50, resnet_preprocess_input),
+    "InceptionV3": (InceptionV3, inception_v3_preprocess_input),
+    "MobileNet": (MobileNetV2, mobilenet_v2_preprocess_input),
+    "VGG16": (VGG16, vgg16_preprocess_input),
     "EfficientNetB0": (EfficientNetB0, efficientnet_preprocess_input)
 }
 

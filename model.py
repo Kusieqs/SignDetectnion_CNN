@@ -1,15 +1,16 @@
+import os
+
 import keras
 from keras import layers, models
 from keras.src.layers import GlobalAveragePooling2D
 from keras.src.optimizers import Adam
-
+import tensorflow as tf
 from utils.constants import SIZE, MODELS_DICT
 from utils.generate_reports import generate_classification_report
 
 
 def train_models(train_data, val_data, num_classes, img_size, epochs=20, batch_size=32):
     histories = {}
-
     preprocessed_datasets = {}
     for model_name, (_, preprocess_fn) in MODELS_DICT.items():
         preprocessed_datasets[model_name] = (
@@ -67,16 +68,21 @@ def compile_model(data_dir):
                    'D-15','D-18','D-2','D-23','D-3','D-42','D-43','D-4a','D-51','D-6','D-6b','D-7','D-8','D-9',
                    'Inny']
 
-    models = train_models(train_ds, val_ds, len(class_names), SIZE[0])
+    print("Dostępne urządzenia GPU:", tf.config.list_physical_devices('GPU'))
+    with tf.device('/GPU:0'):
+        models = train_models(train_ds, val_ds, len(class_names), SIZE[0])
 
     for model_name, (model, history, val_ds_processed) in models.items():
         print(f"Model: {model_name}")
+        path_to_save = os.path.join("models", model_name)
+        os.makedirs("models", exist_ok=True)
+        os.makedirs(path_to_save, exist_ok=True)
+
+
         bal_acc = generate_classification_report(model, val_ds_processed, class_names,
-                                                  model_name, SIZE[0])
+                                                  model_name, SIZE[0], path_to_save)
 
-        # Ścieżka do katalogu modelu dla danej kategorii
-
-        model_path = f"{bal_acc:.3f}.keras"
+        model_path = os.path.join(path_to_save, f"{bal_acc:.3f}.keras")
         model.save(model_path)
 
 

@@ -1,25 +1,25 @@
 import os
-
 from utils import data_split
 from utils.preparation_data import apply_and_save_augmentations
+from utils.create_dirs import create_dirs
 from model import  compile_model
 
 if __name__ == "__main__":
-    input_folder = "Znaki\classification"
-    output_folder = "MainSigns"
+    input_folder = "BasicSigns\classification"
+    augmentations_folder = "AugmentationSigns"
+    final_folder = 'DataSplit'
 
-    if len(os.listdir(output_folder)) == 0:
+    create_dirs()
+
+    if len(os.listdir(augmentations_folder)) == 0:
         print("Augmentation data...")
-        apply_and_save_augmentations(input_folder, output_folder)
+        apply_and_save_augmentations(input_folder, augmentations_folder)
 
-    source_dir = 'MainSigns'
-    data_dir = 'DataSplit'
-
-    if len(os.listdir(source_dir)) == 0:
+    if len(os.listdir(final_folder)) == 0:
         print("Spliting data...")
-        data_split.split_data(source_dir, data_dir)
+        data_split.split_data(augmentations_folder, final_folder)
 
-    compile_model(data_dir)
+    compile_model(final_folder)
 
 
 

@@ -3,7 +3,7 @@ import os
 from sklearn.metrics import classification_report, balanced_accuracy_score
 
 
-def generate_classification_report(model, test_ds, class_names, model_name, img_size):
+def generate_classification_report(model, test_ds, class_names, model_name, img_size, path_to_save):
     y_true, y_pred = [], []
 
     for images, labels in test_ds:
@@ -18,7 +18,7 @@ def generate_classification_report(model, test_ds, class_names, model_name, img_
     print(report)
 
 
-    report_path = os.path.join(f"classification_report_{balanced_acc:.3f}.txt")
+    report_path = os.path.join(path_to_save,f"classification_report_{balanced_acc:.3f}.txt")
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(f'Classification Report\n\n')
         f.write(f'Balanced Accuracy: {balanced_acc:.3f}\n\n')
