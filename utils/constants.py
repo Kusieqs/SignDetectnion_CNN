@@ -10,7 +10,10 @@ from keras.src.applications.vgg16 import preprocess_input as vgg16_preprocess_in
 from keras.src.applications.inception_v3 import preprocess_input as inception_v3_preprocess_input
 from keras.src.applications.mobilenet_v2 import preprocess_input as mobilenet_v2_preprocess_input
 
-SIZE = (160,160)
+SIZE = (224,224)
+EPOCHS = 20
+BATCH_SIZE = 32
+
 
 MODELS_DICT = {
     "ResNet50": (ResNet50, resnet_preprocess_input),
