@@ -4,8 +4,8 @@ from keras import layers, models
 from keras.src.layers import GlobalAveragePooling2D
 from keras.src.optimizers import Adam
 import tensorflow as tf
-from utils.constants import SIZE, MODELS_DICT
-from utils.generate_reports import generate_classification_report
+from Utils.constants import SIZE, MODELS_DICT, EPOCHS, BATCH_SIZE
+from Utils.generate_reports import generate_classification_report
 
 class_names = ['A-1', 'A-11a', 'A-14', 'A-16', 'A-17', 'A-2', 'A-20', 'A-21', 'A-29', 'A-30', 'A-6a', 'A-6b',
                'A-6c', 'A-7', 'B-1', 'B-2', 'B-20', 'B-21', 'B-22', 'B-23', 'B-25', 'B-26', 'B-27', 'B-33', 'B-34',
@@ -13,7 +13,7 @@ class_names = ['A-1', 'A-11a', 'A-14', 'A-16', 'A-17', 'A-2', 'A-20', 'A-21', 'A
                'D-15', 'D-18', 'D-2', 'D-23', 'D-3', 'D-42', 'D-43', 'D-4a', 'D-51', 'D-6', 'D-6b', 'D-7', 'D-8', 'D-9',
                'Inny']
 
-def train_models(train_data, val_data, num_classes, img_size, epochs=20, batch_size=32):
+def train_models(train_data, val_data, num_classes, img_size, epochs=EPOCHS, batch_size=BATCH_SIZE):
     preprocessed_datasets = {}
     for model_name, (_, preprocess_fn) in MODELS_DICT.items():
         preprocessed_datasets[model_name] = (

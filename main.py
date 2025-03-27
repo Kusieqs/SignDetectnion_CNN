@@ -1,7 +1,7 @@
 import os
-from utils import data_split
-from utils.preparation_data import apply_and_save_augmentations
-from utils.create_dirs import create_dirs
+from Utils import data_split
+from Utils.preparation_data import apply_and_save_augmentations
+from Utils.create_dirs import create_dirs
 from model import  compile_model
 
 if __name__ == "__main__":
