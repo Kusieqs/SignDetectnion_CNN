@@ -3,26 +3,33 @@ from keras.src.applications.inception_v3 import InceptionV3
 from keras.src.applications.mobilenet_v2 import MobileNetV2
 from keras.src.applications.resnet import ResNet50
 from keras.src.applications.vgg16 import VGG16
-
+from keras import layers, models
 from keras.src.applications.efficientnet import preprocess_input as efficientnet_preprocess_input
 from keras.src.applications.resnet import preprocess_input as resnet_preprocess_input
 from keras.src.applications.vgg16 import preprocess_input as vgg16_preprocess_input
 from keras.src.applications.inception_v3 import preprocess_input as inception_v3_preprocess_input
 from keras.src.applications.mobilenet_v2 import preprocess_input as mobilenet_v2_preprocess_input
 
-SIZE = (224,224)
+TRANSFER = False
+SIZE = (96,96)
 EPOCHS = 20
 BATCH_SIZE = 32
 
 
 MODELS_DICT = {
-    "ResNet50": (ResNet50, resnet_preprocess_input),
-    "InceptionV3": (InceptionV3, inception_v3_preprocess_input),
-    "MobileNet": (MobileNetV2, mobilenet_v2_preprocess_input),
-    "VGG16": (VGG16, vgg16_preprocess_input),
-    "EfficientNetB0": (EfficientNetB0, efficientnet_preprocess_input)
+    #"ResNet50": (ResNet50, resnet_preprocess_input),
+    #"InceptionV3": (InceptionV3, inception_v3_preprocess_input),
+    #"MobileNet": (MobileNetV2, mobilenet_v2_preprocess_input),
+    #"VGG16": (VGG16, vgg16_preprocess_input),
+    #"EfficientNetB0": (EfficientNetB0, efficientnet_preprocess_input),
+    "sequential": (None, layers.Rescaling(1. / 255))
 }
 
+SIGN_NAME = ['A-1', 'A-11a', 'A-14', 'A-16', 'A-17', 'A-2', 'A-20', 'A-21', 'A-29', 'A-30', 'A-6a', 'A-6b',
+               'A-6c', 'A-7', 'B-1', 'B-2', 'B-20', 'B-21', 'B-22', 'B-23', 'B-25', 'B-26', 'B-27', 'B-33', 'B-34',
+               'B-36', 'B-41', 'B-43', 'B-44', 'B-5', 'B-9', 'C-10', 'C-12', 'C-2', 'C-4', 'C-5', 'C-9', 'D-1',
+               'D-15', 'D-18', 'D-2', 'D-23', 'D-3', 'D-42', 'D-43', 'D-4a', 'D-51', 'D-6', 'D-6b', 'D-7', 'D-8', 'D-9',
+               'Inny']
 
 CLASS_NAMES = {
     0: "Niebezpieczny zakret w prawo",

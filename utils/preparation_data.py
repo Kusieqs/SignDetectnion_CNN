@@ -1,8 +1,7 @@
 import cv2
 import os
 import numpy as np
-
-from utils.constants import SIZE
+from Utils.constants import SIZE
 
 
 def resize_image(image_path, size):

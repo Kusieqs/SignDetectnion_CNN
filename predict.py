@@ -8,6 +8,7 @@ import queue
 
 yolo_model = YOLO("MainModels/best.pt")
 classifier_model = tf.keras.models.load_model("MainModels/0.961.keras")
+model_name = "MobileNet"
 
 video_path = r"Films/1.mp4"
 cap = cv2.VideoCapture(video_path)
@@ -24,7 +25,7 @@ def classify_batch(crops):
     if not crops:
         return []
 
-    preprocessed = [MODELS_DICT.get("MobileNet")[1](cv2.resize(crop, SIZE)) for crop in crops]
+    preprocessed = [MODELS_DICT.get(model_name)[1](cv2.resize(crop, SIZE)) for crop in crops]
     batch_array = np.array(preprocessed)
     predictions = classifier_model.predict(batch_array, verbose=0)
 
@@ -80,8 +81,12 @@ while cap.isOpened():
 
     frame_count += 1
     if frame_count % skip_frames == 0 and not frame_queue.full():
-        frame = cv2.resize(frame, (950, 700))
+        frame = cv2.resize(frame, (1400, 1100))
         frame_queue.put(frame)
+
+    # Ustawienie odpowiedniego opóźnienia, aby zachować płynność wideo
+    if cv2.waitKey(int(1000 / fps)) & 0xFF == ord('q'):
+        break
 
 frame_queue.put(None)
 processing_thread.join()

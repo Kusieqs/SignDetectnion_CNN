@@ -4,14 +4,9 @@ from keras import layers, models
 from keras.src.layers import GlobalAveragePooling2D
 from keras.src.optimizers import Adam
 import tensorflow as tf
-from Utils.constants import SIZE, MODELS_DICT, EPOCHS, BATCH_SIZE
+from Utils.constants import SIZE, MODELS_DICT, EPOCHS, BATCH_SIZE, SIGN_NAME
 from Utils.generate_reports import generate_classification_report
 
-class_names = ['A-1', 'A-11a', 'A-14', 'A-16', 'A-17', 'A-2', 'A-20', 'A-21', 'A-29', 'A-30', 'A-6a', 'A-6b',
-               'A-6c', 'A-7', 'B-1', 'B-2', 'B-20', 'B-21', 'B-22', 'B-23', 'B-25', 'B-26', 'B-27', 'B-33', 'B-34',
-               'B-36', 'B-41', 'B-43', 'B-44', 'B-5', 'B-9', 'C-10', 'C-12', 'C-2', 'C-4', 'C-5', 'C-9', 'D-1',
-               'D-15', 'D-18', 'D-2', 'D-23', 'D-3', 'D-42', 'D-43', 'D-4a', 'D-51', 'D-6', 'D-6b', 'D-7', 'D-8', 'D-9',
-               'Inny']
 
 def train_models(train_data, val_data, num_classes, img_size, epochs=EPOCHS, batch_size=BATCH_SIZE):
     preprocessed_datasets = {}
@@ -51,14 +46,14 @@ def train_models(train_data, val_data, num_classes, img_size, epochs=EPOCHS, bat
         os.makedirs("models", exist_ok=True)
         os.makedirs(path_to_save, exist_ok=True)
 
-        bal_acc = generate_classification_report(model, val_data_processed, class_names,
+        bal_acc = generate_classification_report(model, val_data_processed, SIGN_NAME,
                                                   model_name, SIZE[0], path_to_save)
 
         model_path = os.path.join(path_to_save, f"{bal_acc:.3f}.keras")
         model.save(model_path)
 
 
-def compile_model(data_dir):
+def compile_model_transfer_learning(data_dir):
     batch = 32
     data = data_dir
 
@@ -76,7 +71,7 @@ def compile_model(data_dir):
 
     print("Dostępne urządzenia GPU:", tf.config.list_physical_devices('GPU'))
     with tf.device('/GPU:0'):
-        train_models(train_ds, val_ds, len(class_names), SIZE[0])
+        train_models(train_ds, val_ds, len(SIGN_NAME), SIZE[0])
 
 
 
