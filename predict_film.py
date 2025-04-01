@@ -81,7 +81,7 @@ while cap.isOpened():
 
     frame_count += 1
     if frame_count % skip_frames == 0 and not frame_queue.full():
-        frame = cv2.resize(frame, (1400, 1100))
+        frame = cv2.resize(frame, (1100, 750))
         frame_queue.put(frame)
 
     # Ustawienie odpowiedniego opóźnienia, aby zachować płynność wideo

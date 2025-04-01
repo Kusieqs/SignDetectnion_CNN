@@ -25,10 +25,11 @@ if __name__ == "__main__":
         data_split.split_data(augmentations_folder, final_folder)
     else:
         for folder in os.listdir(final_folder):
-            for signClass in os.listdir(os.path.join(input_folder, folder)):
-                for file in os.listdir(os.path.join(input_folder, folder, signClass)):
-                    path = os.path.join(input_folder, folder, signClass)
-                    resized_img = cv2.resize(path, SIZE)
+            for signClass in os.listdir(os.path.join(final_folder, folder)):
+                for file in os.listdir(os.path.join(final_folder, folder, signClass)):
+                    path = os.path.join(final_folder, folder, signClass, file)
+                    img = cv2.imread(path)
+                    resized_img = cv2.resize(img, SIZE)
                     cv2.imwrite(path, resized_img)
 
     if TRANSFER:
