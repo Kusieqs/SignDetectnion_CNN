@@ -1,4 +1,4 @@
-train: C:\Users\konra\PycharmProjects\CNN_SD\YoloPredict\dataset\train\images
-val: C:\Users\konra\PycharmProjects\CNN_SD\YoloPredict\dataset\val\images
+train:
+val:
 nc: 1
 names: ["sign"]
