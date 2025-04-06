@@ -20,9 +20,11 @@ def classify_batch(crops):
     return results
 
 
-yolo_model = YOLO("MainModels/best.pt")
-classifier_model = tf.keras.models.load_model("MainModels/0.961.keras")
-model_name = "MobileNet"
+yolo_model = YOLO("")
+classifier_model = tf.keras.models.load_model("")
+model_name = ""
+
+
 for file in os.listdir('TestPict'):
     path = os.path.join('TestPict', file)
     image = cv2.imread(path)

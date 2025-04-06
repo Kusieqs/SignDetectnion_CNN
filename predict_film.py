@@ -6,13 +6,13 @@ from Utils.constants import CLASS_NAMES, SIZE, MODELS_DICT
 import threading
 import queue
 
-yolo_model = YOLO("MainModels/best.pt")
-classifier_model = tf.keras.models.load_model("MainModels/0.961.keras")
-model_name = "MobileNet"
+YOLO_MODEL = YOLO("")
+CLASSIFIER_MODEL = tf.keras.models.load_model("")
+MODEL_NAME = ""
+VIDEO_PATH = ""
 
-video_path = r"Films/1.mp4"
-cap = cv2.VideoCapture(video_path)
 
+cap = cv2.VideoCapture(VIDEO_PATH)
 cap.set(cv2.CAP_PROP_BUFFERSIZE, 3)
 
 fps = int(cap.get(cv2.CAP_PROP_FPS))
@@ -25,9 +25,9 @@ def classify_batch(crops):
     if not crops:
         return []
 
-    preprocessed = [MODELS_DICT.get(model_name)[1](cv2.resize(crop, SIZE)) for crop in crops]
+    preprocessed = [MODELS_DICT.get(MODEL_NAME)[1](cv2.resize(crop, SIZE)) for crop in crops]
     batch_array = np.array(preprocessed)
-    predictions = classifier_model.predict(batch_array, verbose=0)
+    predictions = CLASSIFIER_MODEL.predict(batch_array, verbose=0)
 
     results = [(np.argmax(pred), pred) for pred in predictions]
     return results
@@ -39,7 +39,7 @@ def process_frames():
         if frame is None:
             break
 
-        results = yolo_model(frame, verbose=False)
+        results = YOLO_MODEL(frame, verbose=False)
 
         shape_and_name = []
         crops = []
@@ -84,7 +84,6 @@ while cap.isOpened():
         frame = cv2.resize(frame, (1100, 750))
         frame_queue.put(frame)
 
-    # Ustawienie odpowiedniego opóźnienia, aby zachować płynność wideo
     if cv2.waitKey(int(1000 / fps)) & 0xFF == ord('q'):
         break
 
