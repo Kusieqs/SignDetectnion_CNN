@@ -1,3 +1,11 @@
+# ABOUT PROJECT
+The project was created specifically for a bachelor's thesis on automatic recognition of road signs. The project aims to:
+- train the yolo model based on labels
+- train a model for sign classification
+- Predict given signs in a photo or video
+
+The models are trained based on 44 character classes included in Utils/constants
+
 # SETUP TO TRAIN
 
 - Upload the dataset to project. Structure of dictionary:
