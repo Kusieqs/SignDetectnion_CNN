@@ -29,16 +29,15 @@ def apply_and_save_augmentations(folder_path, output_folder):
             image = resize_image(path_to_image, SIZE)
 
             rotated_img1 = rotate_image(image,5)
-            rotated_img2 = rotate_image(rotated_img1,-10)
-            translate_image1 = translate_image(rotated_img1,10, 10)
-            translate_image2 = translate_image(rotated_img2,-10, -10)
+            rotated_img2 = rotate_image(image,-5)
+            translate_image1 = translate_image(image,10, 10)
+            translate_image2 = translate_image(image,-10, -10)
 
             cv2.imwrite(os.path.join(path_to_MainSigns, images), image)
             cv2.imwrite(os.path.join(path_to_MainSigns,'a'+images), rotated_img1)
             cv2.imwrite(os.path.join(path_to_MainSigns,'b'+images), rotated_img2)
             cv2.imwrite(os.path.join(path_to_MainSigns,'c'+images), translate_image1)
             cv2.imwrite(os.path.join(path_to_MainSigns,'d'+images), translate_image2)
-            # Jasnosc?
 
 
 # rotacja obrazu o stopnie
