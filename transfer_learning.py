@@ -6,6 +6,7 @@ from keras.src.optimizers import Adam
 import tensorflow as tf
 from Utils.constants import SIZE, MODELS_DICT, EPOCHS, BATCH_SIZE, SIGN_NAME
 from Utils.generate_reports import generate_classification_report
+from Utils.graphs import graph_creator
 
 
 def train_models(train_data, val_data, num_classes, img_size, epochs=EPOCHS, batch_size=BATCH_SIZE):
@@ -28,7 +29,7 @@ def train_models(train_data, val_data, num_classes, img_size, epochs=EPOCHS, bat
             base_model,
             GlobalAveragePooling2D(),
             layers.Dense(128, activation='relu'),
-            layers.Dropout(0.5),
+            layers.Dropout(0.3),
             layers.Dense(num_classes, activation='softmax')
         ])
 
@@ -36,7 +37,7 @@ def train_models(train_data, val_data, num_classes, img_size, epochs=EPOCHS, bat
                       loss='sparse_categorical_crossentropy',
                       metrics=['accuracy'])
 
-        model.fit(train_data_processed,
+        history = model.fit(train_data_processed,
                             validation_data=val_data_processed,
                             epochs=epochs,
                             batch_size=batch_size)
@@ -49,9 +50,10 @@ def train_models(train_data, val_data, num_classes, img_size, epochs=EPOCHS, bat
         bal_acc = generate_classification_report(model, val_data_processed, SIGN_NAME,
                                                   model_name, SIZE[0], path_to_save)
 
+        graph_creator(history)
+
         model_path = os.path.join(path_to_save, f"{bal_acc:.3f}.keras")
         model.save(model_path)
-
 
 def compile_model_transfer_learning(data_dir):
     batch = 32

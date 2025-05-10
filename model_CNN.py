@@ -4,6 +4,7 @@ import keras
 from keras import layers, models
 from Utils.constants import SIZE, BATCH_SIZE, SIGN_NAME, EPOCHS
 from Utils.generate_reports import generate_classification_report
+from Utils.graphs import graph_creator
 
 
 def compile_model(data_dir):
@@ -30,18 +31,12 @@ def compile_model(data_dir):
         layers.Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=(SIZE[0], SIZE[1], 3)),
         layers.MaxPooling2D((2, 2)),
 
-        layers.Conv2D(32, (3, 3), activation='relu', padding='same'),
-        layers.MaxPooling2D((2, 2)),
-
         layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
-        layers.MaxPooling2D((2, 2)),
-
-        layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
         layers.MaxPooling2D((2, 2)),
 
         layers.Flatten(),
         layers.Dense(128, activation='relu'),
-        layers.Dropout(0.5),
+        layers.Dropout(0.3),
         layers.Dense(num_classes, activation='softmax')
     ])
 
@@ -49,7 +44,8 @@ def compile_model(data_dir):
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
 
-    model.fit(train_ds, validation_data=val_ds, epochs=EPOCHS)
+    history = model.fit(train_ds, validation_data=val_ds, epochs=EPOCHS)
+    graph_creator(history)
 
     path_to_save = os.path.join("models", "sequential")
     os.makedirs("models", exist_ok=True)
