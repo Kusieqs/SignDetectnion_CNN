@@ -11,19 +11,23 @@ from keras.src.applications.inception_v3 import preprocess_input as inception_v3
 from keras.src.applications.mobilenet_v2 import preprocess_input as mobilenet_v2_preprocess_input
 
 INPUT_FOLDER = ""
+GRAPH = True
+
 
 TRANSFER = True
-SIZE = (160,160)
+SIZE = (224,224)
 EPOCHS = 20
 BATCH_SIZE = 32
 
-
-MODELS_DICT = {
+MODELS_DICT_TRANSFER = {
+    "MobileNet": (MobileNetV2, mobilenet_v2_preprocess_input),
+    "EfficientNetB0": (EfficientNetB0, efficientnet_preprocess_input),
     "ResNet50": (ResNet50, resnet_preprocess_input),
     "InceptionV3": (InceptionV3, inception_v3_preprocess_input),
-    "MobileNet": (MobileNetV2, mobilenet_v2_preprocess_input),
     "VGG16": (VGG16, vgg16_preprocess_input),
-    "EfficientNetB0": (EfficientNetB0, efficientnet_preprocess_input),
+}
+
+MODELS_DICT_SEQUENTIAL = {
     "sequential": (None, layers.Rescaling(1. / 255))
 }
 
@@ -42,9 +46,9 @@ CLASS_NAMES = {
     6: "Tramwaj",
     7: "Sygnaly swietlne",
     8: "Inne niebezpieczenstwo",
-    9: "Skrzyzowanie z drogą podporzadkowana wystepujaca po obu stronach",
-    10: "Skrzyzowanie z drogą podporzadkowana wystepujaca po prawej stronie",
-    11: "Skrzyzowanie z drogą podporzadkowana wystepujaca po lewej stronie",
+    9: "Skrzyzowanie z droga podporzadkowana wystepujaca po obu stronach",
+    10: "Skrzyzowanie z droga podporzadkowana wystepujaca po prawej stronie",
+    11: "Skrzyzowanie z droga podporzadkowana wystepujaca po lewej stronie",
     12: "Ustap pierwszenstwa",
 
     13: "Zakaz ruchu w obu kierunkach",
@@ -55,10 +59,10 @@ CLASS_NAMES = {
     18: "Zakaz zawracania",
     19: "Zakaz wyprzedzania",
     20: "Ograniczenie predkosci",
-    21: "Koniec ograniczenia prędkości",
+    21: "Koniec ograniczenia predkosci",
     22: "Zakaz zatrzymywania sie",
-    23: "Strefa ograniczonej prędkości",
-    24: "Koniec strefy ograniczonej predkości",
+    23: "Strefa ograniczonej predkosci",
+    24: "Koniec strefy ograniczonej predkosci",
     25: "Zakaz wjazdu samochodów ciezarowych",
     26: "Zakaz wjazdu rowerow",
 

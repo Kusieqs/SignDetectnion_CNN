@@ -1,14 +1,11 @@
 import os
-
 import cv2
-
 from Utils import data_split
 from Utils.constants import TRANSFER, SIZE, INPUT_FOLDER
 from Utils.preparation_data import apply_and_save_augmentations
 from Utils.create_dirs import create_dirs
 from transfer_learning import compile_model_transfer_learning
 from model_CNN import compile_model
-
 
 if __name__ == "__main__":
     augmentations_folder = "AugmentationSigns"
@@ -36,8 +33,3 @@ if __name__ == "__main__":
         compile_model_transfer_learning(final_folder)
     else:
         compile_model(final_folder)
-
-
-
-
-

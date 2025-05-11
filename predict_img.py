@@ -1,17 +1,19 @@
 import os
-
 import numpy as np
-from tensorflow.python.keras.saving.saved_model_experimental import sequential
-from ultralytics import YOLO
 import cv2
 import tensorflow as tf
-from Utils.constants import MODELS_DICT, SIZE, CLASS_NAMES
+from Utils.constants import MODELS_DICT_TRANSFER, MODELS_DICT_SEQUENTIAL, SIZE, CLASS_NAMES
+from ultralytics import YOLO
 
 def classify_batch(crops):
     if not crops:
         return []
 
-    preprocessed = [MODELS_DICT.get(model_name)[1](cv2.resize(crop, SIZE)) for crop in crops]
+    if MODEL_NAME == "sequential":
+        preprocessed = [MODELS_DICT_TRANSFER.get(MODEL_NAME)[1](cv2.resize(crop, SIZE)) for crop in crops]
+    else:
+        preprocessed = [MODELS_DICT_SEQUENTIAL.get(MODEL_NAME)[1](cv2.resize(crop, SIZE)) for crop in crops]
+
     batch_array = np.array(preprocessed)
 
     predictions = classifier_model.predict(batch_array, verbose=0)
@@ -20,9 +22,9 @@ def classify_batch(crops):
     return results
 
 
-yolo_model = YOLO("")
-classifier_model = tf.keras.models.load_model("")
-model_name = ""
+YOLO_MODEL = YOLO("runs/detect/train4/weights/best.pt")
+classifier_model = tf.keras.models.load_model(r"models/VGG16/0.991.keras")
+MODEL_NAME = "VGG16"
 
 
 for file in os.listdir('TestPict'):
@@ -33,7 +35,7 @@ for file in os.listdir('TestPict'):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    results = yolo_model(image, verbose=False)
+    results = YOLO_MODEL(image, verbose=False)
 
     shape_and_name = []
     crops = []
@@ -55,11 +57,16 @@ for file in os.listdir('TestPict'):
         confidence = prediction[class_id] * 100
         shape_and_name.append(((x1, y1, x2, y2), label, confidence))
 
+    count = 0
     for (x1, y1, x2, y2), label, confidence in shape_and_name:
+        count += 1
         cv2.rectangle(image, (x1, y1), (x2, y2), (255, 0, 0), 2)
-        cv2.putText(image, f"{label} ({confidence:.1f}%)", (x1, y1 - 10),
+        cv2.putText(image, f"{count}. {label} ({confidence:.1f}%)", (x1, y1 - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
+        print(f"{count}. {label} ({confidence:.1f}%)")
+
+    print("###\n\n\n\n\n\n\n###")
     cv2.imshow("image", image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

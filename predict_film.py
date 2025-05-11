@@ -1,37 +1,30 @@
-from ultralytics import YOLO
 import cv2
 import tensorflow as tf
 import numpy as np
-from Utils.constants import CLASS_NAMES, SIZE, MODELS_DICT
 import threading
 import queue
+from ultralytics import YOLO
+from Utils.constants import CLASS_NAMES, SIZE, MODELS_DICT_TRANSFER, MODELS_DICT_SEQUENTIAL
 
 YOLO_MODEL = YOLO("")
 CLASSIFIER_MODEL = tf.keras.models.load_model("")
 MODEL_NAME = ""
 VIDEO_PATH = ""
 
-
-cap = cv2.VideoCapture(VIDEO_PATH)
-cap.set(cv2.CAP_PROP_BUFFERSIZE, 3)
-
-fps = int(cap.get(cv2.CAP_PROP_FPS))
-frame_count = 0
-skip_frames = 1
-frame_queue = queue.Queue(maxsize=5)
-
-
 def classify_batch(crops):
     if not crops:
         return []
 
-    preprocessed = [MODELS_DICT.get(MODEL_NAME)[1](cv2.resize(crop, SIZE)) for crop in crops]
+    if MODEL_NAME == "sequential":
+        preprocessed = [MODELS_DICT_TRANSFER.get(MODEL_NAME)[1](cv2.resize(crop, SIZE)) for crop in crops]
+    else:
+        preprocessed = [MODELS_DICT_SEQUENTIAL.get(MODEL_NAME)[1](cv2.resize(crop, SIZE)) for crop in crops]
+
     batch_array = np.array(preprocessed)
     predictions = CLASSIFIER_MODEL.predict(batch_array, verbose=0)
 
     results = [(np.argmax(pred), pred) for pred in predictions]
     return results
-
 
 def process_frames():
     while True:
@@ -70,6 +63,14 @@ def process_frames():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
+
+cap = cv2.VideoCapture(VIDEO_PATH)
+cap.set(cv2.CAP_PROP_BUFFERSIZE, 3)
+
+fps = int(cap.get(cv2.CAP_PROP_FPS))
+frame_count = 0
+skip_frames = 1
+frame_queue = queue.Queue(maxsize=5)
 
 processing_thread = threading.Thread(target=process_frames)
 processing_thread.start()

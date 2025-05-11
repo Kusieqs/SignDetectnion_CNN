@@ -1,8 +1,7 @@
 import os
-
 import keras
 from keras import layers, models
-from Utils.constants import SIZE, BATCH_SIZE, SIGN_NAME, EPOCHS
+from Utils.constants import SIZE, BATCH_SIZE, SIGN_NAME, EPOCHS, GRAPH, MODELS_DICT_SEQUENTIAL
 from Utils.generate_reports import generate_classification_report
 from Utils.graphs import graph_creator
 
@@ -21,10 +20,10 @@ def compile_model(data_dir):
         image_size=SIZE,
         batch_size=BATCH_SIZE,
     )
-    normalization_layer = layers.Rescaling(1. / 255)
+
+    normalization_layer = MODELS_DICT_SEQUENTIAL["sequential"]
     train_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
     val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
-
     num_classes = len(SIGN_NAME)
 
     model = models.Sequential([
@@ -45,7 +44,9 @@ def compile_model(data_dir):
                   metrics=['accuracy'])
 
     history = model.fit(train_ds, validation_data=val_ds, epochs=EPOCHS)
-    graph_creator(history)
+
+    if GRAPH:
+        graph_creator(history, "sequential")
 
     path_to_save = os.path.join("models", "sequential")
     os.makedirs("models", exist_ok=True)
