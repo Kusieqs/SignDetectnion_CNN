@@ -21,7 +21,7 @@ def compile_model(data_dir):
         batch_size=BATCH_SIZE,
     )
 
-    normalization_layer = MODELS_DICT_SEQUENTIAL["sequential"]
+    normalization_layer = MODELS_DICT_SEQUENTIAL["sequential"][1]
     train_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
     val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
     num_classes = len(SIGN_NAME)
@@ -34,7 +34,7 @@ def compile_model(data_dir):
         layers.MaxPooling2D((2, 2)),
 
         layers.Flatten(),
-        layers.Dense(128, activation='relu'),
+        layers.Dense(64, activation='relu'),
         layers.Dropout(0.3),
         layers.Dense(num_classes, activation='softmax')
     ])
