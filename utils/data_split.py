@@ -14,11 +14,7 @@ def ensure_class_dirs(splitdir, name):
         os.makedirs(class_dir, exist_ok=True)
 
 def split_data(source, split):
-
     create_dirs(split)
-
-    #train = 0.75
-    #val 0.25
 
     for name in os.listdir(source):
         path = os.path.join(source, name)
@@ -39,6 +35,3 @@ def split_data(source, split):
 
         for img_name in val_images:
             shutil.copy(os.path.join(path, img_name), os.path.join(split, 'val', name, img_name))
-
-
-

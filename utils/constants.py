@@ -10,9 +10,8 @@ from keras.src.applications.vgg16 import preprocess_input as vgg16_preprocess_in
 from keras.src.applications.inception_v3 import preprocess_input as inception_v3_preprocess_input
 from keras.src.applications.mobilenet_v2 import preprocess_input as mobilenet_v2_preprocess_input
 
-INPUT_FOLDER = ""
+IMAGES_PATH = ""
 GRAPH = True
-
 
 TRANSFER = True
 SIZE = (224,224)

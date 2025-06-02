@@ -22,8 +22,8 @@ def classify_batch(crops):
     return results
 
 
-YOLO_MODEL = YOLO("runs/detect/train4/weights/best.pt")
-classifier_model = tf.keras.models.load_model(r"models/VGG16/0.991.keras")
+YOLO_MODEL = YOLO("MainModels/best.pt")
+classifier_model = tf.keras.models.load_model("MainModels/0.991.keras")
 MODEL_NAME = "VGG16"
 
 

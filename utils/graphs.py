@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-def graph_creator(history):
+def graph_creator(history, name):
 
     plt.figure(figsize=(10, 5))
     plt.plot(history.history['accuracy'], label='Train Accuracy')
@@ -10,7 +10,7 @@ def graph_creator(history):
     plt.ylabel('Dokładność')
     plt.legend()
     plt.grid(True)
-    plt.savefig("vgg16_accuracy.png")
+    plt.savefig(f"{name}_acc.png")
     plt.show()
 
     plt.figure(figsize=(10, 5))
@@ -21,5 +21,5 @@ def graph_creator(history):
     plt.ylabel('Strata')
     plt.legend()
     plt.grid(True)
-    plt.savefig("vgg16_loss.png")
+    plt.savefig(f"{name}_loss.png")
     plt.show()

@@ -1,7 +1,7 @@
 import os
 import cv2
 from Utils import data_split
-from Utils.constants import TRANSFER, SIZE, INPUT_FOLDER
+from Utils.constants import TRANSFER, SIZE, IMAGES_PATH
 from Utils.preparation_data import apply_and_save_augmentations
 from Utils.create_dirs import create_dirs
 from transfer_learning import compile_model_transfer_learning
@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     if len(os.listdir(augmentations_folder)) == 0:
         print("Augmentation data...")
-        apply_and_save_augmentations(INPUT_FOLDER, augmentations_folder)
+        apply_and_save_augmentations(IMAGES_PATH, augmentations_folder)
 
     if len(os.listdir(final_folder)) == 0:
         print("Spliting data...")
