@@ -13,9 +13,9 @@ from keras.src.applications.mobilenet_v2 import preprocess_input as mobilenet_v2
 IMAGES_PATH = ""
 GRAPH = True
 
-TRANSFER = True
-SIZE = (224,224)
-EPOCHS = 20
+TRANSFER = False
+SIZE = (96,96)
+EPOCHS = 5
 BATCH_SIZE = 32
 
 MODELS_DICT_TRANSFER = {
@@ -30,10 +30,52 @@ MODELS_DICT_SEQUENTIAL = {
     "sequential": (None, layers.Rescaling(1. / 255))
 }
 
-SIGN_NAME = ['A-1', 'A-11a', 'A-16', 'A-17', 'A-2', 'A-20', 'A-21', 'A-29', 'A-30', 'A-6a', 'A-6b',
-               'A-6c', 'A-7', 'B-1', 'B-2', 'B-20', 'B-21', 'B-22', 'B-23', 'B-25', 'B-33', 'B-34',
-               'B-36', 'B-43', 'B-44', 'B-5', 'B-9', 'C-10', 'C-12', 'C-2', 'C-5', 'C-9', 'D-1',
-               'D-15', 'D-18', 'D-2', 'D-23', 'D-3', 'D-42', 'D-43', 'D-4a', 'D-51', 'D-6', 'D-6b']
+SIGN_NAME = [
+    'A-1',
+    'A-11a',
+    'A-16',
+    'A-17',
+    'A-2',
+    'A-20',
+    'A-21',
+    'A-29',
+    'A-30',
+    'A-6a',
+    'A-6b',
+    'A-6c',
+    'A-7',
+    'B-1',
+    'B-2',
+    'B-20',
+    'B-21',
+    'B-22',
+    'B-23',
+    'B-25',
+    'B-33',
+    'B-34',
+    'B-36',
+    'B-43',
+    'B-44',
+    'B-5',
+    'B-9',
+    'C-10',
+    'C-12',
+    'C-2',
+    'C-5',
+    'C-9',
+    'D-1',
+    'D-15',
+    'D-18',
+    'D-2',
+    'D-23',
+    'D-3',
+    'D-42',
+    'D-43',
+    'D-4a',
+    'D-51',
+    'D-6',
+    'D-6b'
+]
 
 CLASS_NAMES = {
     0: "Niebezpieczny zakret w prawo",

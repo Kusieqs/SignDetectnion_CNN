@@ -1,33 +1,29 @@
 import os
 import cv2
-from Utils import data_split
 from Utils.constants import TRANSFER, SIZE, IMAGES_PATH
-from Utils.preparation_data import apply_and_save_augmentations
-from Utils.create_dirs import create_dirs
+from Utils.preparation_data import split_and_augment_data
 from transfer_learning import compile_model_transfer_learning
 from model_CNN import compile_model
 
 if __name__ == "__main__":
-    augmentations_folder = "AugmentationSigns"
     final_folder = 'DataSplit'
 
-    create_dirs()
-
-    if len(os.listdir(augmentations_folder)) == 0:
-        print("Augmentation data...")
-        apply_and_save_augmentations(IMAGES_PATH, augmentations_folder)
+    if not os.path.exists(final_folder):
+        os.makedirs(final_folder, exist_ok=True)
 
     if len(os.listdir(final_folder)) == 0:
-        print("Spliting data...")
-        data_split.split_data(augmentations_folder, final_folder)
+        print("Wczytywanie i dzielenie danych:")
+        split_and_augment_data(IMAGES_PATH, final_folder)
     else:
-        for folder in os.listdir(final_folder):
-            for signClass in os.listdir(os.path.join(final_folder, folder)):
-                for file in os.listdir(os.path.join(final_folder, folder, signClass)):
-                    path = os.path.join(final_folder, folder, signClass, file)
+        for split in ['train', 'val']:
+            for class_name in os.listdir(os.path.join(final_folder, split)):
+                class_path = os.path.join(final_folder, split, class_name)
+                for file in os.listdir(class_path):
+                    path = os.path.join(class_path, file)
                     img = cv2.imread(path)
-                    resized_img = cv2.resize(img, SIZE)
-                    cv2.imwrite(path, resized_img)
+                    if img is not None:
+                        resized_img = cv2.resize(img, SIZE)
+                        cv2.imwrite(path, resized_img)
 
     if TRANSFER:
         compile_model_transfer_learning(final_folder)
