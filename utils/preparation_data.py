@@ -1,10 +1,9 @@
 import os
 import random
-import shutil
-from sklearn.model_selection import train_test_split
 import cv2
 import numpy as np
 from Utils.constants import SIZE
+from sklearn.model_selection import train_test_split
 
 def create_dirs(base_dir):
     for split in ['train', 'val']:

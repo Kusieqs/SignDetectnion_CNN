@@ -3,7 +3,7 @@ from keras.src.applications.inception_v3 import InceptionV3
 from keras.src.applications.mobilenet_v2 import MobileNetV2
 from keras.src.applications.resnet import ResNet50
 from keras.src.applications.vgg16 import VGG16
-from keras import layers, models
+from keras import layers
 from keras.src.applications.efficientnet import preprocess_input as efficientnet_preprocess_input
 from keras.src.applications.resnet import preprocess_input as resnet_preprocess_input
 from keras.src.applications.vgg16 import preprocess_input as vgg16_preprocess_input

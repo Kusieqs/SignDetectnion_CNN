@@ -1,4 +1,5 @@
 import os
+import shutil
 import cv2
 from Utils.constants import TRANSFER, SIZE, IMAGES_PATH
 from Utils.preparation_data import split_and_augment_data
@@ -8,8 +9,10 @@ from model_CNN import compile_model
 if __name__ == "__main__":
     final_folder = 'DataSplit'
 
-    if not os.path.exists(final_folder):
-        os.makedirs(final_folder, exist_ok=True)
+    if os.path.exists(final_folder):
+        shutil.rmtree(final_folder)
+
+    os.makedirs(final_folder, exist_ok=True)
 
     if len(os.listdir(final_folder)) == 0:
         print("Wczytywanie i dzielenie danych:")
